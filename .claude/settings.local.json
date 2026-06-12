@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(npm install *)",
+      "Bash(npx tsc *)",
+      "Bash(node /Users/jitu/Desktop/Portfolio/node_modules/typescript/bin/tsc --noEmit)",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:3000/api/leaderboard)",
+      "Bash(node node_modules/typescript/bin/tsc --noEmit)"
+    ]
+  }
+}
