@@ -1,18 +1,22 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
-const links = [
-  { label: "About", href: "about" },
-  { label: "Experience", href: "experience" },
-  { label: "Tech", href: "tech" },
-  { label: "Projects", href: "projects" },
+const sectionLinks = [
+  { label: "About", id: "about" },
+  { label: "Experience", id: "experience" },
+  { label: "Tech", id: "tech" },
+  { label: "Projects", id: "projects" },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
+  const onHome = pathname === "/";
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40);
@@ -20,8 +24,13 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  // On the home page, smooth-scroll to the section; elsewhere the
+  // /#id href navigates home and jumps to the anchor.
+  const handleSectionClick = (e: React.MouseEvent, id: string) => {
+    if (onHome) {
+      e.preventDefault();
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    }
     setMobileOpen(false);
   };
 
@@ -34,24 +43,39 @@ export default function Navbar() {
         }`}
     >
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        <Link
+          href="/"
+          onClick={(e) => {
+            if (onHome) {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          }}
           className="text-white font-bold text-lg tracking-tight hover:text-blue-400 transition-colors"
         >
           JV<span className="text-blue-500">.</span>
-        </button>
+        </Link>
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-8">
-          {links.map((link) => (
-            <button
-              key={link.href}
-              onClick={() => scrollTo(link.href)}
+          {sectionLinks.map((link) => (
+            <a
+              key={link.id}
+              href={`/#${link.id}`}
+              onClick={(e) => handleSectionClick(e, link.id)}
               className="text-white/50 hover:text-white text-sm font-medium transition-colors duration-200"
             >
               {link.label}
-            </button>
+            </a>
           ))}
+          <Link
+            href="/reading"
+            className={`text-sm font-medium transition-colors duration-200 ${
+              pathname === "/reading" ? "text-white" : "text-white/50 hover:text-white"
+            }`}
+          >
+            Reading
+          </Link>
           <a
             href="/resume.pdf"
             target="_blank"
@@ -92,15 +116,31 @@ export default function Navbar() {
             className="md:hidden bg-black/95 border-t border-white/5 overflow-hidden"
           >
             <div className="px-6 py-4 space-y-4">
-              {links.map((link) => (
-                <button
-                  key={link.href}
-                  onClick={() => scrollTo(link.href)}
+              {sectionLinks.map((link) => (
+                <a
+                  key={link.id}
+                  href={`/#${link.id}`}
+                  onClick={(e) => handleSectionClick(e, link.id)}
                   className="block w-full text-left text-white/60 hover:text-white text-sm font-medium py-1 transition-colors"
                 >
                   {link.label}
-                </button>
+                </a>
               ))}
+              <Link
+                href="/reading"
+                onClick={() => setMobileOpen(false)}
+                className="block w-full text-left text-white/60 hover:text-white text-sm font-medium py-1 transition-colors"
+              >
+                Reading
+              </Link>
+              <a
+                href="/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full text-left text-white/60 hover:text-white text-sm font-medium py-1 transition-colors"
+              >
+                Résumé
+              </a>
             </div>
           </motion.div>
         )}
