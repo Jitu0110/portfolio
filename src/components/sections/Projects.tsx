@@ -16,6 +16,19 @@ const projects: Project[] = [
       "Generates targeted suggestions to improve alignment",
       "LLM-agnostic pipeline supporting GPT-4 and Gemini",
     ],
+    link: "https://github.com/Jitu0110/SikeResume",
+  },
+  {
+    title: "RL MuJoCo",
+    description:
+      "Deep reinforcement learning agents trained to walk, run and stand up in MuJoCo physics environments — Humanoid, Ant, HalfCheetah and HumanoidStandup.",
+    tech: ["Python", "PyTorch", "Stable-Baselines3", "Gymnasium", "MuJoCo"],
+    highlights: [
+      "Implemented and compared SAC, PPO and A2C across four environments",
+      "Hyperparameter tuning of learning rate and discount factor for optimized policies",
+      "Custom reward shaping in sub-environments to steer agent behavior",
+    ],
+    link: "https://github.com/Jitu0110/RLMujoco",
   },
   {
     title: "AI Business Intelligence Agent",
@@ -38,6 +51,7 @@ const projects: Project[] = [
       "Secure REST APIs for matching, groups and chat",
       "Full-stack: native iOS frontend, Spring Boot backend",
     ],
+    link: "https://github.com/pksp99/RoomieMatch",
   },
 ];
 
@@ -45,7 +59,7 @@ export default function Projects() {
   return (
     <SectionWrapper id="projects">
       <SectionTitle accent="What I've Built">Projects</SectionTitle>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-2 gap-6">
         {projects.map((project, i) => (
           <motion.div
             key={project.title}
@@ -61,6 +75,16 @@ export default function Projects() {
               <h3 className="text-white font-bold text-lg group-hover:text-blue-300 transition-colors">
                 {project.title}
               </h3>
+              {project.link && (
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-auto text-xs text-white/40 hover:text-blue-400 border border-white/10 hover:border-blue-500/40 rounded-md px-2 py-1 transition-all"
+                >
+                  GitHub ↗
+                </a>
+              )}
             </div>
             <p className="text-white/50 text-sm leading-relaxed mb-5 flex-1">{project.description}</p>
 

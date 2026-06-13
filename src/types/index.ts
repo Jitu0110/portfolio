@@ -29,6 +29,7 @@ export interface Project {
   description: string;
   tech: string[];
   highlights: string[];
+  link?: string;
 }
 
 export interface Experience {

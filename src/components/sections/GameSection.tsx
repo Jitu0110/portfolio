@@ -37,7 +37,7 @@ export default function GameSection() {
           className="text-center mb-12"
         >
           <span className="text-red-400 text-sm font-mono tracking-[0.3em] uppercase mb-3 block">
-            Interactive Experience
+            Interactive Experience - Fun Weekend Project
           </span>
           <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
             Can You Beat My{" "}
@@ -92,14 +92,12 @@ export default function GameSection() {
                 {entries.map((entry, i) => (
                   <div
                     key={entry.id}
-                    className={`flex items-center gap-3 p-3 rounded-xl ${
-                      i === 0 ? "bg-yellow-500/10 border border-yellow-500/20" : "bg-white/[0.03]"
-                    }`}
+                    className={`flex items-center gap-3 p-3 rounded-xl ${i === 0 ? "bg-yellow-500/10 border border-yellow-500/20" : "bg-white/[0.03]"
+                      }`}
                   >
                     <span
-                      className={`text-sm font-bold w-6 text-center ${
-                        i === 0 ? "text-yellow-400" : i === 1 ? "text-gray-400" : i === 2 ? "text-amber-600" : "text-white/20"
-                      }`}
+                      className={`text-sm font-bold w-6 text-center ${i === 0 ? "text-yellow-400" : i === 1 ? "text-gray-400" : i === 2 ? "text-amber-600" : "text-white/20"
+                        }`}
                     >
                       {i + 1}
                     </span>
