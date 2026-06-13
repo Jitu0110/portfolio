@@ -37,7 +37,7 @@ export default function GameSection() {
           className="text-center mb-12"
         >
           <span className="text-red-400 text-sm font-mono tracking-[0.3em] uppercase mb-3 block">
-            Interactive Experience - Fun Weekend Project
+            Here's a fun weekend project I'm currently working on!
           </span>
           <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
             Can You Beat My{" "}

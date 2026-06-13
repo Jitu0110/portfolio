@@ -24,7 +24,7 @@ const categories: TechCategory[] = [
   {
     name: "Backend",
     color: "blue",
-    techs: ["Spring Boot", "FastAPI", "Node.js", "Microservices", "Redis", "PostgreSQL", "MongoDB", "Neo4j"],
+    techs: ["Spring Boot", "FastAPI", "Node.js", "Microservices", "Redis", "PostgreSQL", "MongoDB", "Neo4j", "Elasticsearch"],
   },
   {
     name: "Cloud & DevOps",

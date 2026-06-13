@@ -52,7 +52,7 @@ export default function About() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           <div className="absolute bottom-4 left-4">
             <p className="text-white font-semibold">Jitendra Vasishta</p>
-            <p className="text-white/60 text-xs">Seattle, WA</p>
+            <p className="text-white/60 text-xs">Somewhere in Big Sur, California</p>
           </div>
         </motion.div>
 
