@@ -20,7 +20,7 @@ const RacingGame = dynamic(() => import("@/features/game/RacingGame"), {
 });
 
 export default function GameSection() {
-  const { entries, loading, fetchLeaderboard } = useLeaderboard();
+  const { entries, loading, submitting, error, fetchLeaderboard, submitScore } = useLeaderboard();
 
   useEffect(() => {
     fetchLeaderboard();
@@ -61,7 +61,7 @@ export default function GameSection() {
             className="lg:col-span-2 relative rounded-2xl overflow-hidden border border-white/10"
             style={{ height: "520px" }}
           >
-            <RacingGame />
+            <RacingGame submitScore={submitScore} submitting={submitting} error={error} />
           </motion.div>
 
           {/* Live Leaderboard panel */}

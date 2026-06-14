@@ -8,13 +8,17 @@ import Track from "./Track";
 import GameUI from "./GameUI";
 import LeaderboardModal from "./LeaderboardModal";
 import { useGameState } from "@/hooks/useGameState";
-import { useLeaderboard } from "@/hooks/useLeaderboard";
 import { START_POSITION } from "./trackData";
 import { RaceSounds } from "./sounds";
 
-export default function RacingGame() {
+interface RacingGameProps {
+  submitScore: (playerName: string, lapTimeMs: number) => Promise<boolean>;
+  submitting: boolean;
+  error: string | null;
+}
+
+export default function RacingGame({ submitScore, submitting, error }: RacingGameProps) {
   const { gameState, startRace, finishRace, resetRace, setTelemetry } = useGameState();
-  const { submitting, error, submitScore } = useLeaderboard();
   const wrapRef = useRef<HTMLDivElement>(null);
   const soundsRef = useRef<RaceSounds | null>(null);
   const [muted, setMuted] = useState(false);
