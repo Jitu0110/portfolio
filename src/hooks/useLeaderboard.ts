@@ -25,14 +25,14 @@ export function useLeaderboard() {
   }, []);
 
   const submitScore = useCallback(
-    async (playerName: string, lapTimeMs: number, checkpointsPassed: number, totalCheckpoints: number) => {
+    async (playerName: string, lapTimeMs: number) => {
       setSubmitting(true);
       setError(null);
       try {
         const res = await fetch("/api/leaderboard", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ player_name: playerName, lap_time_ms: lapTimeMs, checkpoints_passed: checkpointsPassed, total_checkpoints: totalCheckpoints }),
+          body: JSON.stringify({ player_name: playerName, lap_time_ms: lapTimeMs }),
         });
         if (!res.ok) {
           const data = await res.json();

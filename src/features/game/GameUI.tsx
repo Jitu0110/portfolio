@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { formatLapTime } from "@/lib/utils";
 import { GameState } from "@/types";
 import { TRACK_POINTS } from "./trackData";
+import { keys } from "./controls";
 
 interface GameUIProps {
   gameState: GameState;
@@ -27,6 +28,21 @@ const MAP_PATH = TRACK_POINTS.filter((_, i) => i % 10 === 0)
   .map((p) => `${mapX(p.x).toFixed(1)},${mapZ(p.z).toFixed(1)}`)
   .join(" ");
 const START_DOT = { x: mapX(TRACK_POINTS[0].x), z: mapZ(TRACK_POINTS[0].z) };
+
+const press = (key: string) => (e: React.PointerEvent) => {
+  e.preventDefault();
+  keys[key] = true;
+};
+const release = (key: string) => () => { keys[key] = false; };
+
+const STEER_BTNS = [
+  { key: "ArrowLeft", label: "◀" },
+  { key: "ArrowRight", label: "▶" },
+];
+const ACCEL_BTNS = [
+  { key: "ArrowUp", label: "▲" },
+  { key: "ArrowDown", label: "▼" },
+];
 
 export default function GameUI({ gameState, onStart, muted, onToggleMute }: GameUIProps) {
   const { phase, countdown, raceTime, speed, carX, carZ } = gameState;
@@ -63,10 +79,13 @@ export default function GameUI({ gameState, onStart, muted, onToggleMute }: Game
               <p className="text-red-400 text-xs font-mono tracking-[0.25em] uppercase mb-5">
                 One timed lap
               </p>
-              <p className="text-white/50 text-sm mb-1">
+              <p className="hidden xl:block text-white/50 text-sm mb-1">
                 <span className="font-mono text-white/70">W / ↑</span> throttle ·{" "}
                 <span className="font-mono text-white/70">S / ↓</span> brake ·{" "}
                 <span className="font-mono text-white/70">A D / ← →</span> steer
+              </p>
+              <p className="xl:hidden text-white/50 text-sm mb-1">
+                Use the on-screen buttons to steer, throttle &amp; brake
               </p>
               <p className="text-white/30 text-xs mb-8">
                 The clock starts at lights out. Finish where you started.
@@ -168,8 +187,8 @@ export default function GameUI({ gameState, onStart, muted, onToggleMute }: Game
             </div>
           </div>
 
-          {/* Controls hint */}
-          <div className="absolute bottom-4 right-4">
+          {/* Controls hint — desktop only */}
+          <div className="hidden xl:block absolute bottom-4 right-4">
             <div className="bg-black/50 backdrop-blur-sm border border-white/5 rounded-xl px-3 py-2">
               <div className="text-white/30 text-[10px] font-mono space-y-0.5">
                 <div>W / ↑ &nbsp;throttle</div>
@@ -177,6 +196,36 @@ export default function GameUI({ gameState, onStart, muted, onToggleMute }: Game
                 <div>A D &nbsp;&nbsp;&nbsp;steer</div>
               </div>
             </div>
+          </div>
+
+          {/* Touch controls — mobile only */}
+          <div className="xl:hidden absolute bottom-28 left-4 flex gap-3 pointer-events-auto select-none">
+            {STEER_BTNS.map(({ key: k, label }) => (
+              <button
+                key={k}
+                onPointerDown={press(k)}
+                onPointerUp={release(k)}
+                onPointerLeave={release(k)}
+                onPointerCancel={release(k)}
+                className="w-16 h-16 bg-black/60 backdrop-blur-sm border border-white/20 rounded-2xl text-white text-2xl flex items-center justify-center active:bg-white/20 touch-none"
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <div className="xl:hidden absolute bottom-4 right-4 flex flex-col gap-2 pointer-events-auto select-none">
+            {ACCEL_BTNS.map(({ key: k, label }) => (
+              <button
+                key={k}
+                onPointerDown={press(k)}
+                onPointerUp={release(k)}
+                onPointerLeave={release(k)}
+                onPointerCancel={release(k)}
+                className="w-16 h-16 bg-black/60 backdrop-blur-sm border border-white/20 rounded-2xl text-white text-2xl flex items-center justify-center active:bg-white/20 touch-none"
+              >
+                {label}
+              </button>
+            ))}
           </div>
         </>
       )}

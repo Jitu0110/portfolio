@@ -17,6 +17,7 @@ import {
   N,
 } from "./trackData";
 import { RacePhase } from "@/types";
+import { keys } from "./controls";
 
 interface CarProps {
   phase: RacePhase;
@@ -38,7 +39,6 @@ const EDGE_MARGIN = 1.0;     // car half-width buffer against the walls
 
 export default function Car({ phase, onTelemetry, onFinish }: CarProps) {
   const groupRef = useRef<THREE.Group>(null);
-  const keys = useRef<Record<string, boolean>>({});
   const { camera } = useThree();
 
   const sim = useRef({
@@ -55,15 +55,17 @@ export default function Car({ phase, onTelemetry, onFinish }: CarProps) {
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      keys.current[e.key] = true;
+      keys[e.key] = true;
       if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(e.key)) e.preventDefault();
     };
-    const up = (e: KeyboardEvent) => { keys.current[e.key] = false; };
+    const up = (e: KeyboardEvent) => { keys[e.key] = false; };
     window.addEventListener("keydown", down);
     window.addEventListener("keyup", up);
     return () => {
       window.removeEventListener("keydown", down);
       window.removeEventListener("keyup", up);
+      // Clear any held inputs so they don't carry over to the next race
+      Object.keys(keys).forEach(k => { keys[k] = false; });
     };
   }, []);
 
@@ -74,10 +76,9 @@ export default function Car({ phase, onTelemetry, onFinish }: CarProps) {
     const s = sim.current;
 
     if (phase === "racing" && !s.finished) {
-      const k = keys.current;
-      const throttle = k["w"] || k["W"] || k["ArrowUp"];
-      const brake = k["s"] || k["S"] || k["ArrowDown"];
-      const steer = (k["a"] || k["A"] || k["ArrowLeft"] ? 1 : 0) - (k["d"] || k["D"] || k["ArrowRight"] ? 1 : 0);
+      const throttle = keys["w"] || keys["W"] || keys["ArrowUp"];
+      const brake = keys["s"] || keys["S"] || keys["ArrowDown"];
+      const steer = (keys["a"] || keys["A"] || keys["ArrowLeft"] ? 1 : 0) - (keys["d"] || keys["D"] || keys["ArrowRight"] ? 1 : 0);
 
       // Decompose velocity into the car's frame
       const fwd = new THREE.Vector2(-Math.sin(s.yaw), -Math.cos(s.yaw));

@@ -9,7 +9,7 @@ import GameUI from "./GameUI";
 import LeaderboardModal from "./LeaderboardModal";
 import { useGameState } from "@/hooks/useGameState";
 import { useLeaderboard } from "@/hooks/useLeaderboard";
-import { SECTOR_COUNT, START_POSITION } from "./trackData";
+import { START_POSITION } from "./trackData";
 import { RaceSounds } from "./sounds";
 
 export default function RacingGame() {
@@ -62,8 +62,7 @@ export default function RacingGame() {
   const handleSubmitScore = useCallback(
     async (name: string) => {
       if (!gameState.finalTime) return false;
-      // The car only fires onFinish when every track sector was covered
-      return submitScore(name, gameState.finalTime, SECTOR_COUNT, SECTOR_COUNT);
+      return submitScore(name, gameState.finalTime);
     },
     [gameState.finalTime, submitScore]
   );
