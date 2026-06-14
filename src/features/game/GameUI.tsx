@@ -198,7 +198,12 @@ export default function GameUI({ gameState, onStart, muted, onToggleMute }: Game
             </div>
           </div>
 
-          {/* Touch controls — mobile only */}
+        </>
+      )}
+
+      {/* Touch controls — mobile/tablet only, visible from countdown onwards so fingers are ready */}
+      {(phase === "countdown" || phase === "racing" || phase === "finished") && (
+        <>
           <div className="xl:hidden absolute bottom-28 left-4 flex gap-3 pointer-events-auto select-none">
             {STEER_BTNS.map(({ key: k, label }) => (
               <button
