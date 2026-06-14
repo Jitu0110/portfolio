@@ -1,48 +1,32 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatLapTime } from "@/lib/utils";
 import { isNameAppropriate, NAME_REJECTED_MESSAGE } from "@/lib/moderation";
-import { LeaderboardEntry } from "@/types";
 
 interface LeaderboardModalProps {
   isOpen: boolean;
   lapTime: number | null;
-  entries: LeaderboardEntry[];
-  loading: boolean;
   submitting: boolean;
   error: string | null;
   onSubmit: (name: string) => Promise<boolean>;
   onClose: () => void;
-  onFetchLeaderboard: () => void;
 }
 
 export default function LeaderboardModal({
   isOpen,
   lapTime,
-  entries,
-  loading,
   submitting,
   error,
   onSubmit,
   onClose,
-  onFetchLeaderboard,
 }: LeaderboardModalProps) {
   const [playerName, setPlayerName] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [nameError, setNameError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (isOpen) {
-      onFetchLeaderboard();
-      setSubmitted(false);
-      setPlayerName("");
-      setNameError(null);
-    }
-  }, [isOpen]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     const name = playerName.trim();
     if (!name || submitting) return;
@@ -55,6 +39,13 @@ export default function LeaderboardModal({
     if (ok) setSubmitted(true);
   };
 
+  const handleClose = () => {
+    setSubmitted(false);
+    setPlayerName("");
+    setNameError(null);
+    onClose();
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -63,17 +54,17 @@ export default function LeaderboardModal({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="absolute inset-0 flex items-center justify-center bg-black/85 backdrop-blur-sm z-20 p-4"
-          onClick={(e) => e.target === e.currentTarget && onClose()}
+          onClick={(e) => e.target === e.currentTarget && handleClose()}
         >
           <motion.div
             initial={{ scale: 0.9, y: 20 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.9, y: 20 }}
-            className="bg-[#0d0d1a] border border-white/10 rounded-2xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto"
+            className="bg-[#0d0d1a] border border-white/10 rounded-2xl w-full max-w-sm p-6"
           >
             {/* Header */}
             <div className="text-center mb-6">
-              <div className="text-4xl mb-2">🏆</div>
+              <div className="text-4xl mb-2">🏁</div>
               <h3 className="text-2xl font-black text-white">Race Complete!</h3>
               {lapTime && (
                 <p className="text-blue-400 font-mono text-xl mt-1 font-bold">
@@ -84,8 +75,10 @@ export default function LeaderboardModal({
 
             {/* Submit form */}
             {!submitted ? (
-              <form onSubmit={handleSubmit} className="mb-6">
-                <label className="block text-white/60 text-sm mb-2">Enter your name for the leaderboard</label>
+              <form onSubmit={handleSubmit} className="mb-4">
+                <label className="block text-white/60 text-sm mb-2">
+                  Enter your name for the leaderboard
+                </label>
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -112,56 +105,15 @@ export default function LeaderboardModal({
                 )}
               </form>
             ) : (
-              <div className="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-center">
+              <div className="mb-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-center">
                 <p className="text-green-400 font-semibold">Score submitted! ✓</p>
+                <p className="text-white/40 text-xs mt-1">Check the leaderboard below</p>
               </div>
             )}
 
-            {/* Leaderboard */}
-            <div>
-              <h4 className="text-white/50 text-xs font-mono tracking-widest uppercase mb-3">
-                Top 10 Fastest Times
-              </h4>
-              {loading ? (
-                <div className="text-center py-6 text-white/30 text-sm">Loading...</div>
-              ) : entries.length === 0 ? (
-                <div className="text-center py-6 text-white/30 text-sm">No scores yet — be the first!</div>
-              ) : (
-                <div className="space-y-2">
-                  {entries.map((entry, i) => (
-                    <motion.div
-                      key={entry.id}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                      className={`flex items-center gap-3 p-3 rounded-lg ${
-                        i === 0
-                          ? "bg-yellow-500/10 border border-yellow-500/20"
-                          : "bg-white/[0.03] border border-white/5"
-                      }`}
-                    >
-                      <span
-                        className={`w-7 text-center font-bold text-sm ${
-                          i === 0 ? "text-yellow-400" : i === 1 ? "text-gray-300" : i === 2 ? "text-amber-600" : "text-white/30"
-                        }`}
-                      >
-                        {i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `#${i + 1}`}
-                      </span>
-                      <span className="flex-1 text-white text-sm font-medium truncate">
-                        {entry.player_name}
-                      </span>
-                      <span className="text-blue-400 font-mono text-sm font-bold">
-                        {formatLapTime(entry.lap_time_ms)}
-                      </span>
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-            </div>
-
             <button
-              onClick={onClose}
-              className="w-full mt-6 py-3 border border-white/10 rounded-xl text-white/50 hover:text-white hover:border-white/30 text-sm font-medium transition-all"
+              onClick={handleClose}
+              className="w-full py-3 border border-white/10 rounded-xl text-white/50 hover:text-white hover:border-white/30 text-sm font-medium transition-all"
             >
               Race Again
             </button>

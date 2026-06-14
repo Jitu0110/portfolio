@@ -14,7 +14,7 @@ import { RaceSounds } from "./sounds";
 
 export default function RacingGame() {
   const { gameState, startRace, finishRace, resetRace, setTelemetry } = useGameState();
-  const { entries, loading, submitting, error, fetchLeaderboard, submitScore } = useLeaderboard();
+  const { submitting, error, submitScore } = useLeaderboard();
   const wrapRef = useRef<HTMLDivElement>(null);
   const soundsRef = useRef<RaceSounds | null>(null);
   const [muted, setMuted] = useState(false);
@@ -124,13 +124,10 @@ export default function RacingGame() {
       <LeaderboardModal
         isOpen={gameState.phase === "finished"}
         lapTime={gameState.finalTime}
-        entries={entries}
-        loading={loading}
         submitting={submitting}
         error={error}
         onSubmit={handleSubmitScore}
         onClose={handleCloseModal}
-        onFetchLeaderboard={fetchLeaderboard}
       />
     </div>
   );

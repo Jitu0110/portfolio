@@ -117,12 +117,12 @@ export class RaceSounds {
     this.beep(880, 0.55, 0.25);
   }
 
-  /** Chequered flag — ascending fanfare. */
+  /** Chequered flag — ascending fanfare, then engine off. */
   finish() {
     this.beep(660, 0.14, 0.2, 0);
     this.beep(830, 0.14, 0.2, 0.16);
     this.beep(990, 0.4, 0.24, 0.32);
-    this.engineIdle();
+    this.engineOff();
   }
 
   setMuted(m: boolean) {
