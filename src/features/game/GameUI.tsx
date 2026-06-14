@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatLapTime } from "@/lib/utils";
 import { GameState } from "@/types";
@@ -9,6 +10,8 @@ import { keys } from "./controls";
 interface GameUIProps {
   gameState: GameState;
   onStart: () => void;
+  onRestart: () => void;
+  onQuit: () => void;
   muted: boolean;
   onToggleMute: () => void;
 }
@@ -44,8 +47,9 @@ const ACCEL_BTNS = [
   { key: "ArrowDown", label: "▼" },
 ];
 
-export default function GameUI({ gameState, onStart, muted, onToggleMute }: GameUIProps) {
+export default function GameUI({ gameState, onStart, onRestart, onQuit, muted, onToggleMute }: GameUIProps) {
   const { phase, countdown, raceTime, speed, carX, carZ } = gameState;
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div className="absolute inset-0 pointer-events-none">
@@ -59,6 +63,54 @@ export default function GameUI({ gameState, onStart, muted, onToggleMute }: Game
           {muted ? "🔇" : "🔊"}
         </button>
       )}
+
+      {/* Menu button — available during countdown and racing */}
+      {(phase === "countdown" || phase === "racing") && (
+        <button
+          onClick={() => setMenuOpen(true)}
+          aria-label="Menu"
+          className="absolute top-4 left-16 z-20 pointer-events-auto w-10 h-10 flex items-center justify-center bg-black/70 backdrop-blur-sm border border-white/10 rounded-xl text-base hover:border-white/30 transition-colors"
+        >
+          ✕
+        </button>
+      )}
+
+      {/* Pause menu popup */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm z-30 pointer-events-auto"
+            onClick={(e) => e.target === e.currentTarget && setMenuOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 16 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 16 }}
+              className="bg-[#0d0d1a] border border-white/10 rounded-2xl p-6 w-full max-w-xs text-center"
+            >
+              <h3 className="text-white font-black text-xl mb-1">Paused</h3>
+              <p className="text-white/40 text-sm mb-6">What would you like to do?</p>
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={() => { setMenuOpen(false); onRestart(); }}
+                  className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-sm transition-all"
+                >
+                  Restart Race
+                </button>
+                <button
+                  onClick={() => { setMenuOpen(false); onQuit(); }}
+                  className="w-full py-3 border border-white/10 hover:border-white/30 text-white/60 hover:text-white font-semibold rounded-xl text-sm transition-all"
+                >
+                  Quit Game
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* Idle — pre-race overlay */}
       <AnimatePresence>
         {phase === "idle" && (
@@ -150,8 +202,8 @@ export default function GameUI({ gameState, onStart, muted, onToggleMute }: Game
             </div>
           </div>
 
-          {/* Minimap */}
-          <div className="absolute top-4 right-4">
+          {/* Minimap — desktop only */}
+          <div className="hidden xl:block absolute top-4 right-4">
             <div className="bg-black/70 backdrop-blur-sm border border-white/10 rounded-xl p-3">
               <svg width={MAP_W} height={MAP_H} className="block">
                 <polygon

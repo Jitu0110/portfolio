@@ -22,6 +22,7 @@ export default function RacingGame({ submitScore, submitting, error }: RacingGam
   const wrapRef = useRef<HTMLDivElement>(null);
   const soundsRef = useRef<RaceSounds | null>(null);
   const [muted, setMuted] = useState(false);
+  const [raceKey, setRaceKey] = useState(0);
 
   useEffect(() => {
     return () => soundsRef.current?.dispose();
@@ -30,6 +31,13 @@ export default function RacingGame({ submitScore, submitting, error }: RacingGam
   const handleStart = useCallback(() => {
     if (!soundsRef.current) soundsRef.current = new RaceSounds();
     soundsRef.current.init(); // inside the click — satisfies autoplay policy
+    setRaceKey(k => k + 1);
+    startRace();
+    setTimeout(() => wrapRef.current?.focus(), 50);
+  }, [startRace]);
+
+  const handleRestart = useCallback(() => {
+    setRaceKey(k => k + 1);
     startRace();
     setTimeout(() => wrapRef.current?.focus(), 50);
   }, [startRace]);
@@ -111,6 +119,7 @@ export default function RacingGame({ submitScore, submitting, error }: RacingGam
 
         {gameState.phase !== "idle" && (
           <Car
+            key={raceKey}
             phase={gameState.phase}
             onTelemetry={handleTelemetry}
             onFinish={finishRace}
@@ -121,6 +130,8 @@ export default function RacingGame({ submitScore, submitting, error }: RacingGam
       <GameUI
         gameState={gameState}
         onStart={handleStart}
+        onRestart={handleRestart}
+        onQuit={resetRace}
         muted={muted}
         onToggleMute={handleToggleMute}
       />
