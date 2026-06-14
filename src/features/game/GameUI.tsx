@@ -91,7 +91,7 @@ export default function GameUI({ gameState, onStart, onRestart, onQuit, muted, o
               exit={{ scale: 0.9, y: 16 }}
               className="bg-[#0d0d1a] border border-white/10 rounded-2xl p-6 w-full max-w-xs text-center"
             >
-              <h3 className="text-white font-black text-xl mb-1">Paused</h3>
+              <h3 className="text-white font-black text-xl mb-1">Menu</h3>
               <p className="text-white/40 text-sm mb-6">What would you like to do?</p>
               <div className="flex flex-col gap-3">
                 <button
