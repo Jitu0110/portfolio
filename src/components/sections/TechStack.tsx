@@ -9,7 +9,7 @@ const categories: TechCategory[] = [
   {
     name: "Languages",
     color: "white",
-    techs: ["Java", "Python", "TypeScript", "JavaScript", "C++", "SQL"],
+    techs: ["Java", "Python", "TypeScript", "JavaScript", "C++", "SQL", "Golang"],
   },
   {
     name: "AI / Generative AI",
