@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="7" fill="#0a0a0a"/>
+  <text
+    x="16"
+    y="24"
+    font-family="'Arial', 'Helvetica Neue', sans-serif"
+    font-weight="800"
+    font-size="23"
+    fill="#3b82f6"
+    text-anchor="middle"
+    letter-spacing="-0.5"
+  >J</text>
+</svg>
