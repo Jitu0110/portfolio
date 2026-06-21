@@ -2,13 +2,11 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import SectionWrapper, { SectionTitle } from "@/components/ui/SectionWrapper";
+import SectionWrapper from "@/components/ui/SectionWrapper";
 
 export default function About() {
   return (
-    <SectionWrapper id="about">
-      <SectionTitle accent="Who I am">About Me</SectionTitle>
-
+    <SectionWrapper id="about" className="pt-8 pb-24">
       <div className="grid lg:grid-cols-[320px_1fr] gap-8 items-start">
         {/* Photo */}
         <motion.div
@@ -43,7 +41,7 @@ export default function About() {
         >
           <p className="text-white/60 leading-relaxed text-sm">
             I&apos;m Jitendra — most people call me Jitu. I&apos;m a Software Engineer at{" "}
-            <span className="text-white font-medium">Medifast Inc.</span> in Seattle, where I build
+            <a href="https://medifastinc.com/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-white font-medium hover:text-blue-300 transition-colors">Medifast Inc.<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" className="w-2 h-2 opacity-40" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M3.5 1H11m0 0v7.5M11 1 1 11"/></svg></a> in Seattle, where I build
             full-stack applications and AI-powered tools used by{" "}
             <span className="text-blue-300 font-semibold">25,000+ health coaches</span> every day.
           </p>
@@ -58,7 +56,7 @@ export default function About() {
           </p>
           <p className="text-white/60 leading-relaxed text-sm">
             Before this, I spent two years at{" "}
-            <span className="text-white font-medium">Neustar</span> where I built the centralized
+            <a href="https://home.neustar/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-white font-medium hover:text-blue-300 transition-colors">Neustar<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" className="w-2 h-2 opacity-40" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M3.5 1H11m0 0v7.5M11 1 1 11"/></svg></a> where I built the centralized
             file metadata store that helped cross-team ML and Data Engineering teams across the
             Identity resolution pipeline —{" "}
             <span className="text-blue-300 font-semibold">processing 10M+ records daily</span>.

@@ -77,7 +77,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+    <section className="relative overflow-hidden bg-black pt-36 pb-16">
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" />
 
       {/* Gradient orbs */}
@@ -85,17 +85,6 @@ export default function Hero() {
       <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-blue-800/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-4"
-        >
-          <span className="text-blue-400 text-sm font-mono tracking-[0.3em] uppercase">
-            Available for new opportunities
-          </span>
-        </motion.div>
-
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -124,6 +113,15 @@ export default function Hero() {
           className="text-base md:text-lg text-white/40 max-w-2xl mx-auto leading-relaxed"
         >
           I build scalable software, AI-powered products, and interactive web experiences.
+        </motion.p>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="text-sm text-white/25 mt-3 tracking-widest uppercase"
+        >
+          Seattle, Washington
         </motion.p>
 
       </div>
