@@ -5,12 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
-const sectionLinks = [
-  { label: "About", id: "about" },
-  { label: "Experience", id: "experience" },
-  { label: "Tech", id: "tech" },
-  { label: "Projects", id: "projects" },
-];
+const sectionLinks: { label: string; id: string }[] = [];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -140,6 +135,13 @@ export default function Navbar() {
                 className="block w-full text-left text-white/60 hover:text-white text-sm font-medium py-1 transition-colors"
               >
                 Résumé
+              </a>
+              <a
+                href="mailto:jituvasishta0110@gmail.com"
+                onClick={() => setMobileOpen(false)}
+                className="block w-full text-left text-blue-400 hover:text-blue-300 text-sm font-medium py-1 transition-colors"
+              >
+                Contact
               </a>
             </div>
           </motion.div>

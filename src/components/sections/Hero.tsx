@@ -76,10 +76,6 @@ export default function Hero() {
     };
   }, []);
 
-  const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" />
@@ -125,58 +121,10 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-base md:text-lg text-white/40 max-w-2xl mx-auto mb-12 leading-relaxed"
+          className="text-base md:text-lg text-white/40 max-w-2xl mx-auto leading-relaxed"
         >
           I build scalable software, AI-powered products, and interactive web experiences.
         </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.55 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
-        >
-          <button
-            onClick={() => scrollToSection("experience")}
-            className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5 text-base"
-          >
-            View Experience
-          </button>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.75 }}
-          className="flex items-center justify-center gap-6 mt-8"
-        >
-          <a
-            href="https://www.linkedin.com/in/jitendravasishta/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white/40 hover:text-blue-400 text-sm transition-colors"
-          >
-            LinkedIn
-          </a>
-          <span className="text-white/20">·</span>
-          <a
-            href="https://github.com/Jitu0110"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white/40 hover:text-blue-400 text-sm transition-colors"
-          >
-            GitHub
-          </a>
-          <span className="text-white/20">·</span>
-          <a
-            href="/resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white/40 hover:text-blue-400 text-sm transition-colors"
-          >
-            Résumé
-          </a>
-        </motion.div>
 
       </div>
     </section>

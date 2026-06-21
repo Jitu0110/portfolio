@@ -48,6 +48,9 @@ export default function GameSection() {
           <p className="text-white/40 text-lg max-w-xl mx-auto">
             Complete the circuit, beat the clock, and climb the leaderboard.
           </p>
+          <p className="text-white/25 text-sm mt-2">
+            Best experienced on a laptop or desktop with a keyboard.
+          </p>
           <div className="w-16 h-0.5 bg-gradient-to-r from-red-500 to-transparent mx-auto mt-4" />
         </motion.div>
 
