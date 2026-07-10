@@ -23,22 +23,13 @@ Single-page portfolio at `src/app/page.tsx` renders all sections in sequence: He
 - `src/components/sections/` — one file per portfolio section (all Server Components unless noted)
 - `src/components/ui/` — shared layout pieces (Navbar, Footer, SectionWrapper, GlowBadge)
 - `src/features/game/` — the 3D racing game (all Client Components using React Three Fiber / Drei / Three.js)
-- `src/hooks/` — `useGameState` (race phase/timer FSM), `useLeaderboard` (fetch/submit scores)
-- `src/lib/` — `readings.ts` (static reading list data), `moderation.ts` (profanity filter via `obscenity`), `supabase.ts` (re-exports browser client)
-- `src/utils/supabase/` — `client.ts`, `server.ts`, `middleware.ts` (standard Supabase SSR setup)
-- `src/types/index.ts` — shared TypeScript interfaces (`GameState`, `LeaderboardEntry`, `RacePhase`, etc.)
+- `src/hooks/` — `useGameState` (race phase/timer FSM)
+- `src/lib/` — `readings.ts` (static reading list data)
+- `src/types/index.ts` — shared TypeScript interfaces (`GameState`, `RacePhase`, etc.)
 
 ### Racing game
 
-`GameSection` lazy-loads `RacingGame` (the root game component). It renders a `<Canvas>` (R3F) containing `Car` and `Track`, with `GameUI` and `LeaderboardModal` as HTML overlays. Game phases: `idle → countdown → racing → finished`. `useGameState` owns the timer and phase FSM; `useLeaderboard` calls the API route.
-
-### Leaderboard API
-
-`src/app/api/leaderboard/route.ts` — GET returns top 10 by `lap_time_ms`; POST validates name (profanity filter + length), lap time (must exceed physics-derived `MIN_POSSIBLE_RACE_MS` from `trackData.ts`), and checkpoint count before inserting into Supabase. Anti-cheat lives here, not client-side.
-
-### Supabase
-
-Requires env vars `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Schema is in `supabase-schema.sql` (single `leaderboard` table with RLS). Server-side routes use `@/utils/supabase/server`; client components use `@/utils/supabase/client` (via `@/lib/supabase`).
+`GameSection` lazy-loads `RacingGame` (the root game component). It renders a `<Canvas>` (R3F) containing `Car` and `Track`, with `GameUI` as an HTML overlay. Game phases: `idle → countdown → racing → finished`. `useGameState` owns the timer and phase FSM. Lap times are not persisted — the finished-phase overlay just shows the result with an option to race again.
 
 ### Reading list
 

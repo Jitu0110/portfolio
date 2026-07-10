@@ -48,7 +48,7 @@ const ACCEL_BTNS = [
 ];
 
 export default function GameUI({ gameState, onStart, onRestart, onQuit, muted, onToggleMute }: GameUIProps) {
-  const { phase, countdown, raceTime, speed, carX, carZ } = gameState;
+  const { phase, countdown, raceTime, finalTime, speed, carX, carZ } = gameState;
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -148,6 +148,47 @@ export default function GameUI({ gameState, onStart, onRestart, onQuit, muted, o
               >
                 Start Race
               </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Finished — race complete overlay */}
+      <AnimatePresence>
+        {phase === "finished" && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 flex items-center justify-center bg-black/85 backdrop-blur-sm pointer-events-auto z-20 p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-[#0d0d1a] border border-white/10 rounded-2xl w-full max-w-sm p-6 text-center"
+            >
+              <div className="text-4xl mb-2">🏁</div>
+              <h3 className="text-2xl font-black text-white mb-1">Race Complete!</h3>
+              {finalTime !== null && (
+                <p className="text-blue-400 font-mono text-xl mb-6 font-bold">
+                  {formatLapTime(finalTime)}
+                </p>
+              )}
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={onRestart}
+                  className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-sm transition-all"
+                >
+                  Race Again
+                </button>
+                <button
+                  onClick={onQuit}
+                  className="w-full py-3 border border-white/10 hover:border-white/30 text-white/50 hover:text-white text-sm font-medium rounded-xl transition-all"
+                >
+                  Quit
+                </button>
+              </div>
             </motion.div>
           </motion.div>
         )}
