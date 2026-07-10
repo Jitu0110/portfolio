@@ -6,18 +6,11 @@ import { Stars } from "@react-three/drei";
 import Car from "./Car";
 import Track from "./Track";
 import GameUI from "./GameUI";
-import LeaderboardModal from "./LeaderboardModal";
 import { useGameState } from "@/hooks/useGameState";
 import { START_POSITION } from "./trackData";
 import { RaceSounds } from "./sounds";
 
-interface RacingGameProps {
-  submitScore: (playerName: string, lapTimeMs: number) => Promise<boolean>;
-  submitting: boolean;
-  error: string | null;
-}
-
-export default function RacingGame({ submitScore, submitting, error }: RacingGameProps) {
+export default function RacingGame() {
   const { gameState, startRace, finishRace, resetRace, setTelemetry } = useGameState();
   const wrapRef = useRef<HTMLDivElement>(null);
   const soundsRef = useRef<RaceSounds | null>(null);
@@ -71,19 +64,6 @@ export default function RacingGame({ submitScore, submitting, error }: RacingGam
     });
   }, []);
 
-  const handleSubmitScore = useCallback(
-    async (name: string) => {
-      if (!gameState.finalTime) return false;
-      return submitScore(name, gameState.finalTime);
-    },
-    [gameState.finalTime, submitScore]
-  );
-
-  const handleCloseModal = useCallback(() => {
-    resetRace();
-    setTimeout(() => wrapRef.current?.focus(), 50);
-  }, [resetRace]);
-
   return (
     <div
       ref={wrapRef}
@@ -134,15 +114,6 @@ export default function RacingGame({ submitScore, submitting, error }: RacingGam
         onQuit={resetRace}
         muted={muted}
         onToggleMute={handleToggleMute}
-      />
-
-      <LeaderboardModal
-        isOpen={gameState.phase === "finished"}
-        lapTime={gameState.finalTime}
-        submitting={submitting}
-        error={error}
-        onSubmit={handleSubmitScore}
-        onClose={handleCloseModal}
       />
     </div>
   );

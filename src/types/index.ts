@@ -1,10 +1,3 @@
-export interface LeaderboardEntry {
-  id: string;
-  player_name: string;
-  lap_time_ms: number;
-  created_at: string;
-}
-
 export type RacePhase = "idle" | "countdown" | "racing" | "finished";
 
 export interface GameState {
