@@ -31,9 +31,9 @@ export default function GameSection() {
             Here's a fun weekend project I'm currently working on!
           </span>
           <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
-            Can You Beat My{" "}
+            Take It For A{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-400">
-              Fastest Lap?
+              Spin
             </span>
           </h2>
           <p className="text-white/40 text-lg max-w-xl mx-auto">
